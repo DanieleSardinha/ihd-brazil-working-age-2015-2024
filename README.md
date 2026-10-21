@@ -2,37 +2,36 @@
 
 ## Overview
 
-This repository contains the reproducible R code associated with the study:
+This repository contains the reproducible R code and aggregated analytical outputs associated with the study:
 
-**Working-age mortality from ischemic heart disease in Brazil, 2015–2024:
-temporal trends and years of potential life lost**
+**Working-age mortality from ischemic heart disease in Brazil, 2015–2024: temporal trends and years of potential life lost**
 
-The study evaluates mortality from ischemic heart disease (IHD) among
-working-age adults in Brazil between 2015 and 2024, including age-standardized
-mortality rates, temporal trends, sex and regional patterns, years of potential
-life lost (YPLL), data-quality indicators, acute myocardial infarction (AMI)
-hospital utilization, and mortality-related productivity losses.
+The study evaluates mortality from ischemic heart disease (IHD) among working-age adults in Brazil between 2015 and 2024. The analytical workflow includes age-standardized mortality rates, temporal trends, sex- and region-specific estimates, sociodemographic distributions, years of potential life lost (YPLL), assessment of ill-defined causes of death, acute myocardial infarction (AMI) hospital utilization and SUS reimbursement, and mortality-related productivity losses.
+
+The complete workflow has been validated from raw source files through the final aggregated analytical outputs.
 
 ## Data sources
 
-The study uses publicly accessible Brazilian health and demographic sources:
+The study uses publicly accessible Brazilian health, demographic, and economic data sources:
 
-- SIM – Mortality Information System / DATASUS
-- SIH/SUS – Hospital Information System / DATASUS
-- IBGE – 2024 Revision of population projections
-- PNAD Contínua
-- IPCA
+- **SIM/DATASUS** – Mortality Information System
+- **SIH/SUS/DATASUS** – Hospital Information System
+- **IBGE** – 2024 Revision of population projections
+- **PNAD Contínua** – earnings data used in the human-capital productivity analysis
+- **IPCA** – inflation adjustment of SIH/SUS reimbursement values to constant 2024 BRL
 
-Raw individual-level records are not redistributed in this repository.
+Raw and derived individual-level records are **not redistributed** in this repository.
+
+Instructions for obtaining and organizing the required source files are provided in `data/README_data_access.md`.
 
 ## Main analytical definitions
 
 - Primary mortality population: ages 20–59 years, IHD ICD-10 I20–I25
-- Sensitivity mortality population: ages 30–69 years
+- Sensitivity mortality population: ages 30–69 years, IHD ICD-10 I20–I25
 - Hospital subanalysis: principal diagnosis AMI ICD-10 I21
-- Primary YPLL threshold: age 60
-- YPLL sensitivity threshold: age 70
-- Productivity analysis: all IHD deaths I20–I25
+- Primary YPLL threshold: age 60 years
+- YPLL sensitivity threshold: age 70 years
+- Productivity analysis: all IHD deaths, ICD-10 I20–I25
 - Base-case productivity discount rate: 5%
 - Sensitivity discount rates: 3% and 0%
 
@@ -40,46 +39,112 @@ Raw individual-level records are not redistributed in this repository.
 
 ```text
 R/                 Reproducible R scripts
-data/              Source-data access instructions
-outputs/           Aggregated reproducible outputs
-supplementary/     RECORD checklist and documentation
+data/              Source-data access and preparation instructions
+local_data/        Local source and derived data; excluded from Git
+outputs/           Aggregated reproducible analytical outputs and audits
+supplementary/     RECORD checklist and supplementary documentation
 run_all.R          Complete workflow runner
 CITATION.cff       Software citation metadata
+LICENSE            MIT License
 ```
 
-## Execution order
+The `local_data/` directory is excluded through `.gitignore` and must not be committed to the public repository.
+
+## Required R packages
+
+The workflow requires the following R packages:
+
+```r
+data.table
+read.dbc
+readxl
+segmented
+nlme
+```
+
+The setup script checks whether these packages are available before the workflow proceeds.
+
+## Analytical workflow
+
+The scripts are executed in the following order:
 
 ```text
 00_setup.R
 01_data_preparation.R
 02_mortality_rates_standardization.R
 03_temporal_trends.R
-04_sex_regional_analyses.R
+04_sociodemographic_distribution.R
 05_ypll.R
 06_data_quality_R00_R99.R
 07_hospital_SIH_SUS.R
 08_productivity_losses.R
 ```
 
-From the repository root:
+### Script overview
+
+- `00_setup.R` – verifies packages and repository directories
+- `01_data_preparation.R` – reconstructs the analytical SIM datasets from the national DBC files
+- `02_mortality_rates_standardization.R` – calculates age-standardized mortality rates, regional estimates, sex-specific rates, and the 30–69-year sensitivity analysis
+- `03_temporal_trends.R` – estimates temporal trends, segmented models, APCs, AAPC, breakpoint diagnostics, and AR(1) sensitivity analyses
+- `04_sociodemographic_distribution.R` – reconstructs the sociodemographic distributions used in Table 2 and supplementary analyses
+- `05_ypll.R` – calculates YPLL using ages 60 and 70 as thresholds
+- `06_data_quality_R00_R99.R` – evaluates deaths assigned to ICD-10 R00–R99 by year and region
+- `07_hospital_SIH_SUS.R` – reproduces the AMI hospital-utilization and SUS reimbursement analyses
+- `08_productivity_losses.R` – estimates mortality-related productivity losses using the human-capital approach
+
+## Running the complete workflow
+
+After preparing the required files described in `data/README_data_access.md`, set the working directory to the repository root and run:
 
 ```r
 source("run_all.R")
 ```
 
-See `data/README_data_access.md` for the required local inputs.
+The workflow reconstructs the local analytical datasets and reproduces the principal mortality, trend, sociodemographic, YPLL, data-quality, hospital, and productivity-loss results.
 
-## Reporting guideline
+A successful complete run ends with:
 
-The study follows STROBE and the RECORD extension for studies using routinely
-collected health data. The completed RECORD checklist is available under
-`supplementary/`.
+```text
+FULL ANALYTICAL WORKFLOW COMPLETED SUCCESSFULLY
+```
+
+## Reproducibility outputs
+
+The `outputs/` directory contains aggregated results and validation files generated by the workflow, including:
+
+- corrected national, regional, and sex-specific age-standardized mortality rates
+- 30–69-year sensitivity estimates
+- temporal-trend summaries
+- sociodemographic distributions
+- YPLL results
+- R00–R99 data-quality indicators
+- SIH/SUS hospital-utilization and reimbursement results
+- productivity-loss estimates
+- analytical audit files
+- R session information
+
+Individual-level mortality data and other local source files are not included.
+
+## Reporting guidelines
+
+The study follows the **STROBE** statement and the **RECORD** extension for studies conducted using routinely collected health data.
+
+The completed RECORD checklist is available in the `supplementary/` directory.
 
 ## Code availability
 
-The analytical code is publicly available in this repository. A permanent DOI
-for release `v1.0.0` will be added after archival in Zenodo.
+The complete analytical code and aggregated reproducibility outputs are publicly available in this repository.
+
+Release **v1.0.0** corresponds to the validated analytical workflow prepared for the revised manuscript.
+
+A permanent DOI will be added after archival of the release in Zenodo.
+
+## Citation
+
+Software citation metadata are provided in `CITATION.cff`.
+
+After Zenodo archival, the permanent software DOI will also be added to the repository and citation metadata.
 
 ## License
 
-MIT License.
+This repository is distributed under the **MIT License**.
