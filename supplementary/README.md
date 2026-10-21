@@ -1,3 +1,4 @@
 # Supplementary materials
 
-This directory contains supplementary documentation associated with the manuscript, including reporting checklists and reproducibility documentation.
+This directory contains reporting checklists and other supplementary
+documentation associated with the manuscript.

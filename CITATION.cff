@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this analytical code, please cite the archived software release."
+title: "Reproducible R code for working-age mortality from ischemic heart disease in Brazil, 2015–2024"
+type: software
+authors:
+  - family-names: "Sardinha"
+    given-names: "Daniele Melo"
+version: "1.0.0"
+date-released: "2026-10-20"
+repository-code: "https://github.com/DanieleSardinha/ihd-brazil-working-age-2015-2024"
+license: "MIT"
+abstract: >-
+  Reproducible R code for the nationwide study of ischemic heart disease
+  mortality among working-age adults in Brazil, including age-standardized
+  mortality rates, temporal trends, sex and regional analyses, years of
+  potential life lost, data-quality assessment, hospital utilization, and
+  mortality-related productivity losses.

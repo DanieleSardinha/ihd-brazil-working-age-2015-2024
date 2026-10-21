@@ -4,60 +4,82 @@
 
 This repository contains the reproducible R code associated with the study:
 
-**Working-age mortality from ischemic heart disease in Brazil, 2015–2024: temporal trends and years of potential life lost**
+**Working-age mortality from ischemic heart disease in Brazil, 2015–2024:
+temporal trends and years of potential life lost**
 
-The study evaluates temporal trends in ischemic heart disease (IHD) mortality among working-age adults in Brazil between 2015 and 2024, including age-standardized mortality rates, years of potential life lost (YPLL), regional and sex-specific patterns, acute myocardial infarction (AMI) hospital utilization, and mortality-related productivity losses.
+The study evaluates mortality from ischemic heart disease (IHD) among
+working-age adults in Brazil between 2015 and 2024, including age-standardized
+mortality rates, temporal trends, sex and regional patterns, years of potential
+life lost (YPLL), data-quality indicators, acute myocardial infarction (AMI)
+hospital utilization, and mortality-related productivity losses.
 
 ## Data sources
 
-The analyses use publicly accessible Brazilian health and demographic data:
+The study uses publicly accessible Brazilian health and demographic sources:
 
-- **SIM – Mortality Information System**, Brazilian Ministry of Health / DATASUS
-- **SIH/SUS – Hospital Information System**, Brazilian Unified Health System / DATASUS
-- **IBGE – 2024 Revision of Brazilian population projections**
-- **PNAD Contínua – Continuous National Household Sample Survey**
-- **IPCA – Broad Consumer Price Index**
+- SIM – Mortality Information System / DATASUS
+- SIH/SUS – Hospital Information System / DATASUS
+- IBGE – 2024 Revision of population projections
+- PNAD Contínua
+- IPCA
 
-SIM mortality records and SIH/SUS hospital data were analyzed independently and were not linked at the individual level.
+Raw individual-level records are not redistributed in this repository.
 
-## Study population
+## Main analytical definitions
 
-The primary mortality analysis includes Brazilian residents aged 20–59 years whose underlying cause of death was classified as ischemic heart disease according to ICD-10 codes **I20–I25**.
-
-The hospital subanalysis includes SUS-funded admissions among adults aged 20–59 years with acute myocardial infarction as the principal diagnosis (**ICD-10 I21**).
-
-A sensitivity analysis of mortality trends was conducted among adults aged 30–69 years.
-
-## Main analyses
-
-The repository contains R code for:
-
-1. Data preparation and case identification
-2. Direct age standardization using the WHO World Standard Population 2000–2025
-3. Variance estimation and 95% confidence intervals
-4. Sex-specific and regional analyses
-5. Weighted segmented log-linear temporal trend models
-6. Autocorrelation assessment
-7. Years of potential life lost (YPLL)
-8. Sensitivity analysis for ages 30–69 years
-9. Assessment of ill-defined causes of death (ICD-10 R00–R99)
-10. SIH/SUS hospital utilization and reimbursement analyses
-11. Mortality-related productivity-loss estimation
-
-## Reproducibility
-
-The analytical workflow was implemented in R.
-
-The scripts will be organized in the order required to reproduce the analyses reported in the manuscript.
-
-Raw individual-level mortality records are **not redistributed in this repository**. Instructions for accessing the original publicly available data sources are provided separately.
-
-No directly identifying personal information is included in this repository.
+- Primary mortality population: ages 20–59 years, IHD ICD-10 I20–I25
+- Sensitivity mortality population: ages 30–69 years
+- Hospital subanalysis: principal diagnosis AMI ICD-10 I21
+- Primary YPLL threshold: age 60
+- YPLL sensitivity threshold: age 70
+- Productivity analysis: all IHD deaths I20–I25
+- Base-case productivity discount rate: 5%
+- Sensitivity discount rates: 3% and 0%
 
 ## Repository structure
 
 ```text
-R/                 R scripts used in the analyses
-data/              Instructions for obtaining and preparing source data
-outputs/           Reproducible aggregated outputs where applicable
-supplementary/     Reporting checklists and supplementary documentation
+R/                 Reproducible R scripts
+data/              Source-data access instructions
+outputs/           Aggregated reproducible outputs
+supplementary/     RECORD checklist and documentation
+run_all.R          Complete workflow runner
+CITATION.cff       Software citation metadata
+```
+
+## Execution order
+
+```text
+00_setup.R
+01_data_preparation.R
+02_mortality_rates_standardization.R
+03_temporal_trends.R
+04_sex_regional_analyses.R
+05_ypll.R
+06_data_quality_R00_R99.R
+07_hospital_SIH_SUS.R
+08_productivity_losses.R
+```
+
+From the repository root:
+
+```r
+source("run_all.R")
+```
+
+See `data/README_data_access.md` for the required local inputs.
+
+## Reporting guideline
+
+The study follows STROBE and the RECORD extension for studies using routinely
+collected health data. The completed RECORD checklist is available under
+`supplementary/`.
+
+## Code availability
+
+The analytical code is publicly available in this repository. A permanent DOI
+for release `v1.0.0` will be added after archival in Zenodo.
+
+## License
+
+MIT License.
