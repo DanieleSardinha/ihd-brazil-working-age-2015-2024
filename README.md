@@ -137,13 +137,13 @@ The complete analytical code and aggregated reproducibility outputs are publicly
 
 Release **v1.0.0** corresponds to the validated analytical workflow prepared for the revised manuscript.
 
-A permanent DOI will be added after archival of the release in Zenodo.
+The archived software release is available at https://doi.org/10.5281/zenodo.23547645.
 
 ## Citation
 
 Software citation metadata are provided in `CITATION.cff`.
 
-After Zenodo archival, the permanent software DOI will also be added to the repository and citation metadata.
+The permanent DOI for release v1.0.0 is https://doi.org/10.5281/zenodo.23547645.
 
 ## License
 

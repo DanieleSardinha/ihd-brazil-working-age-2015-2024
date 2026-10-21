@@ -15,6 +15,7 @@ version: "1.0.0"
 date-released: "2026-10-21"
 
 repository-code: "https://github.com/DanieleSardinha/ihd-brazil-working-age-2015-2024"
+doi: "10.5281/zenodo.23547645"
 
 license: "MIT"
 
